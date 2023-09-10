@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "Bored Api Wrapper"
+  description: "This is a Bored Api Wrapper"
+servers:
+  - url: http://0.0.0.0:5000
+tags:
+  - name: "Activity"
+    description: "About activities"
+paths:
+  /api/activity/:
+    get:
+      tags:
+        - "Activity"
+      summary: "Get new activity"
+      parameters:
+        - name: "key"
+          in: "query"
+          description: "Key id of activity"
+          required: false
+          schema:
+            type: "integer"
+        - name: "type"
+          in: "query"
+          description: "Type of activity (education, recreational, social, diy, 
+          charity, cooking, relaxation, music, busywork)"
+          required: false
+          schema:
+            type: "string"
+        - name: "participants"
+          in: "query"
+          description: "The number of people that this activity could involve"
+          required: false
+          schema:
+            type: "integer"
+        - name: "price"
+          in: "query"
+          description: "A factor describing the cost of the event with zero being free"
+          required: false
+          schema:
+            type: "number"
+        - name: "minprice"
+          in: "query"
+          description: "Minimal value of price"
+          required: false
+          schema:
+            type: "number"
+        - name: "maxprice"
+          in: "query"
+          description: "Max value of price"
+          required: false
+          schema:
+            type: "number"
+        - name: "accessibility"
+          in: "query"
+          description: "A factor describing how possible an event is to do with zero being the most accessible"
+          required: false
+          schema:
+            type: "number"
+        - name: "minaccessibility"
+          in: "query"
+          description: "Minimal value of accessibility"
+          required: false
+          schema:
+            type: "number"
+        - name: "maxaccessibility"
+          in: "query"
+          description: "Max value of accessibility"
+          required: false
+          schema:
+            type: "number"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityOut'
+        '400':
+          description: "Bad parameters"
+          content:
+            application/json:
+              example:
+                message: "No activity found with the specified parameters"
+  /api/get_activities/:
+    get:
+      tags:
+        - "Activity"
+      summary: "Get last 5 activities"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivitiesOut'
+components:
+  schemas:
+    ActivityOut:
+      type: "object"
+      properties:
+        activity:
+          type: "string"
+          example:	"Start a daily journal"
+        key:
+          type: "integer"
+          example: "8779876"
+        accessibility:
+          type: "number"
+          example: 0
+        link:
+          type: "string"
+          example: ""
+        participants:
+          type: "integer"
+          example: 1
+        price:
+          type: "number"
+          example: 0
+        type:
+          type: "string"
+          example: "relaxation"
+    ActivitiesOut:
+      type: "array"
+      items:
+        $ref: '#/components/schemas/ActivityOut'
